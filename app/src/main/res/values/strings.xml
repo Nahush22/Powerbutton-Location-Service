@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Powerbutton Event</string>
+
+    <string name="NotificationString">The service to monitor power button click is running</string>
+</resources>
