@@ -1,4 +1,4 @@
-package com.example.powerbuttonevent;
+package com.example.AssistBeacon;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,18 +6,34 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
+import java.util.concurrent.TimeUnit;
+
+import javax.xml.transform.Result;
+
 public class EvenReceiver extends BroadcastReceiver {
 
     public static boolean wasScreenOn = true;
 
     public int count = 0;
-    public long start, end,diff;
+    public long start, end, diff;
+
+    Context context;
+
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         //throw new UnsupportedOperationException("Not yet implemented");
+
+        this.context = context;
 
         Log.e("LOB","onReceive");
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
@@ -43,14 +59,18 @@ public class EvenReceiver extends BroadcastReceiver {
 
                 if(diff <= 2000) {
                     Toast.makeText(context, "Power button clicked", Toast.LENGTH_LONG).show();
-                    context.startService(new Intent(context, ExecutionService.class));
+//                    context.startService(new Intent(context, ExecutionService.class));
+//                    context.startService(new Intent(context, GoogleService.class));
+//                    startLocationForegroundService();
+                    createWorker();
                 }
             }
+
 
 //            Toast.makeText(context, "Power button clicked", Toast.LENGTH_LONG).show();
 
 //            Intent i = new Intent();
-//            i.setClassName("com.example.powerbuttonevent", "com.example.powerbuttonevent.SecondActivity");
+//            i.setClassName("com.example.AssistBeacon", "com.example.AssistBeacon.SecondActivity");
 //            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            context.startActivity(i);
 
@@ -74,4 +94,28 @@ public class EvenReceiver extends BroadcastReceiver {
 //        }
 
     }
+
+    private void startLocationForegroundService() {
+
+        Intent serviceIntent = new Intent(context, LocationForeground.class);
+        serviceIntent.putExtra("inputExtra", "Location Foreground Service initiation");
+
+        ContextCompat.startForegroundService(context, serviceIntent);
+
+    }
+
+
+    private void createWorker(){
+
+        PeriodicWorkRequest periodicWorkRequest =
+                new PeriodicWorkRequest.Builder(UploadWorker.class, 15, TimeUnit.MINUTES)
+                        .build();
+
+        WorkManager.getInstance(context)
+                .enqueue(periodicWorkRequest);
+
+    }
+
+
+
 }

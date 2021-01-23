@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:945663094432:android:afc477a21499ebef3323c5",
+        "android_client_info": {
+          "package_name": "com.example.AssistBeacon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945663094432-iulm7lsck71j7jlt0eljtjiul8qugtf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1GDrxphFCUfa089GG1XZn3dwoER3Kd7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945663094432-iulm7lsck71j7jlt0eljtjiul8qugtf1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:945663094432:android:fcbc55ad3f02f6453323c5",
         "android_client_info": {
           "package_name": "com.example.keyv1"
@@ -52,19 +81,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "945663094432-j17dj19vrmabc8ai7pcke110rtlpm879.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.locationsms",
-            "certificate_hash": "507c2b1b2b8cdaac70c6447fc167ca9c2a1c173c"
-          }
-        },
-        {
           "client_id": "945663094432-62iepf37ebjcpopr7ek1d37ff99mvbdm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.locationsms",
             "certificate_hash": "908a9e2ec09aa7b2b6c9c5eca895d597b8409f98"
+          }
+        },
+        {
+          "client_id": "945663094432-j17dj19vrmabc8ai7pcke110rtlpm879.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.locationsms",
+            "certificate_hash": "507c2b1b2b8cdaac70c6447fc167ca9c2a1c173c"
           }
         },
         {

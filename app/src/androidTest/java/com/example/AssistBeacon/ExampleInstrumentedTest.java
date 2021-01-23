@@ -1,4 +1,4 @@
-package com.example.powerbuttonevent;
+package com.example.AssistBeacon;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.powerbuttonevent", appContext.getPackageName());
+        assertEquals("com.example.AssistBeacon", appContext.getPackageName());
     }
 }

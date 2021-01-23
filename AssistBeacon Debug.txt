@@ -1,0 +1,16 @@
+1. Background location worked perfectly in Redmi 4
+2. Background location service didn't work a while after app was minimised....restarted after opening app
+3. Tried using foreground location tracking but same problem
+4. Added background_location permission to manifest & location value to foregroundservicetype attribute of service in manifest
+5. Removing battery saver control of app fixed issue....now location tracking triggered whenever power button clicked
+6. Enabling Auto Start permission in app info didn't fix the issue
+
+
+PROBLEM APPARENTLY DUE TO DOZE BEHAVIOR ADDED IN MARSHMALLOW THAT RESTRICTS NETWORK ACCESS FOR BG SERVICES(Even Foreground)
+
+Potential Fixes:
+
+1.Use WorkManager to perform location tracking(https://github.com/android/location-samples/issues/220)
+2.Use JobScheduler
+3.Use AlarmManager
+4.Requesting user to disable battery saver for current app

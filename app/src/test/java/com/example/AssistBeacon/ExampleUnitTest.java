@@ -1,4 +1,4 @@
-package com.example.powerbuttonevent;
+package com.example.AssistBeacon;
 
 import org.junit.Test;
 

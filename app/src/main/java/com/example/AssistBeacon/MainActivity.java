@@ -1,10 +1,13 @@
-package com.example.powerbuttonevent;
+package com.example.AssistBeacon;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,16 +16,22 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
     int userCount = 0;
 
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
+    Date currentTime = Calendar.getInstance().getTime();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +70,45 @@ public class MainActivity extends AppCompatActivity {
         stopServiceBtn = findViewById(R.id.stopServ);
         actPerm = findViewById(R.id.actLoc);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+//        https://stackoverflow.com/questions/42035244/getting-w-activity-can-request-only-one-set-of-permissions-at-a-time  (To request all permissions in one request)
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS}, PackageManager.PERMISSION_GRANTED);
+
+
+//To enable background running instead of getting stopped by battery saver(DIDNT WORK)
+
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            Intent intent = new Intent();
+//            String packageName = getPackageName();
+//            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+//            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+//                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                intent.setData(Uri.parse("package:" + packageName));
+//                startActivity(intent);
+//            }
+//        }
+
+//        String packageName = getPackageName();
+//        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+//
+//        if(!pm.isIgnoringBatteryOptimizations(packageName))
+//            Toast.makeText(this, "Battery saver enabled", Toast.LENGTH_SHORT).show();
+//
+//        ComponentName cn = new ComponentName("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity");
+//
+////        https://stackoverflow.com/questions/55322529/opening-miui-battery-saver-for-specific-apps (Show page to disable battery saver specifically for Xiaomi)
+////        WORKS but only for Xiaomi
+//
+//        try {
+//            Intent intent = new Intent();
+//            intent.setComponent(cn);
+//            intent.putExtra("package_name", getPackageName());
+//            intent.putExtra("package_label", getText(R.string.app_name));
+//            startActivity(intent);
+//        }
+//        catch (ActivityNotFoundException anfe) {
+//        }
 
         startServiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
                     userCount++;
 
-                    String phoneNumber = "6546768431";
+                    String phoneNumber = "9444050540";
                     double myLat = location.getLatitude();
                     double myLong = location.getLongitude();
                     String myLatitude = String.valueOf(location.getLatitude());
@@ -104,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
 
                     String address = null;
 
-                    address = getAddressFromLocation(myLat, myLong, getApplicationContext());
+                    address = "Date : " + currentTime.toString() + "   " + getAddressFromLocation(myLat, myLong, getApplicationContext());
 
-                    String message = "Latitude = " + myLatitude +"   " + "Longitude = " + myLongitude;
+                    String message = "Date : " + currentTime.toString() + "   Latitude = " + myLatitude +"   " + "Longitude = " + myLongitude;
 
 //                    if(address!=null)
 //                    {
@@ -226,6 +275,10 @@ public class MainActivity extends AppCompatActivity {
 
         Intent serviceIntent = new Intent(this, MyService.class);
         stopService(serviceIntent);
+        serviceIntent = new Intent(this, GoogleService.class);
+        stopService(serviceIntent);
+        Intent locationIntent = new Intent(this, LocationForeground.class);
+        stopService(locationIntent);
 
     }
 

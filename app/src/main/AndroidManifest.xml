@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.powerbuttonevent">
+    package="com.example.AssistBeacon">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="true"
@@ -16,23 +18,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".ExecutionService"
+            android:name="com.example.AssistBeacon.LocationForeground"
+            android:foregroundServiceType="location"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
+        <service
+            android:name="com.example.AssistBeacon.GoogleService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.example.AssistBeacon.ExecutionService"
+            android:enabled="true"
+            android:exported="true" />
 
-        <activity android:name=".SecondActivity" />
+        <activity android:name="com.example.AssistBeacon.SecondActivity" />
 
         <receiver
-            android:name=".EvenReceiver"
+            android:name="com.example.AssistBeacon.EvenReceiver"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".MyService"
+            android:name="com.example.AssistBeacon.MyService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.AssistBeacon.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
